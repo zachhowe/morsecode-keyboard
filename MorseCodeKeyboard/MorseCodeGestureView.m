@@ -50,7 +50,7 @@
         
         self.currentCodeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.currentCodeLabel.textAlignment = NSTextAlignmentCenter;
-        self.currentCodeLabel.font = [UIFont systemFontOfSize:24.0];
+        self.currentCodeLabel.font = [UIFont fontWithName:@"Menlo" size:16.0];
         self.currentCodeLabel.translatesAutoresizingMaskIntoConstraints = NO;
         self.currentCodeLabel.numberOfLines = 3;
         [self.currentCodeLabel sizeToFit];
@@ -180,9 +180,9 @@
         if (_possibleResults.count > 0) {
             [status appendFormat:@"\n\n[%@]", [_possibleResults componentsJoinedByString:@", "]];
         }
-        
-        self.currentCodeLabel.text = status;
     }
+    
+    self.currentCodeLabel.text = status;
 }
 
 @end
