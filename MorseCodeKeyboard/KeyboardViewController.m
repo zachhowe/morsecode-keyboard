@@ -79,7 +79,19 @@
     [self.textDocumentProxy insertText:[NSString stringWithFormat:@"%c", character]];
 }
 
-- (void)didRecognizePossibleCharacters:(NSArray *)characters {
+- (void)morseCodeGestureViewDidRecognizeSpaceEvent:(MorseCodeGestureView *)morseCodeView {
+    [self.textDocumentProxy insertText:@" "];
+}
+
+- (void)morseCodeGestureViewDidRecognizeBackspaceEvent:(MorseCodeGestureView *)morseCodeView {
+    [self.textDocumentProxy deleteBackward];
+}
+
+- (void)morseCodeGestureViewDidRecognizeCapsToggleEvent:(MorseCodeGestureView *)morseCodeView {
+}
+
+- (void)morseCodeGestureViewDidRecognizeReturnKeyEvent:(MorseCodeGestureView *)morseCodeView {
+    [self.textDocumentProxy insertText:@"\n"];
 }
 
 @end

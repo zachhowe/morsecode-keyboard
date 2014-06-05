@@ -14,6 +14,10 @@
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeGestureRecognizer;
+@property (nonatomic, strong) UISwipeGestureRecognizer *upSwipeGestureRecognizer;
 
 @property (nonatomic, strong) RNTimer *evaluateTimer;
 @property (nonatomic, strong) NSMutableString *currentCode;
@@ -32,17 +36,33 @@
     if (self) {
         [self setup];
         
+        self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        self.tapGestureRecognizer.numberOfTapsRequired = 1;
+        self.tapGestureRecognizer.numberOfTouchesRequired = 1;
+        self.tapGestureRecognizer.delegate = self;
+        [self addGestureRecognizer:self.tapGestureRecognizer];
+        
         self.longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
         self.longPressGestureRecognizer.minimumPressDuration = 0.25;
         self.longPressGestureRecognizer.numberOfTapsRequired = 0;
         self.longPressGestureRecognizer.delegate = self;
         [self addGestureRecognizer:self.longPressGestureRecognizer];
         
-        self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-        self.tapGestureRecognizer.numberOfTapsRequired = 1;
-        self.tapGestureRecognizer.numberOfTouchesRequired = 1;
-        self.tapGestureRecognizer.delegate = self;
-        [self addGestureRecognizer:self.tapGestureRecognizer];
+        self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+        self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self addGestureRecognizer:self.leftSwipeGestureRecognizer];
+        
+        self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+        self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        [self addGestureRecognizer:self.rightSwipeGestureRecognizer];
+        
+        self.upSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+        self.upSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+        [self addGestureRecognizer:self.upSwipeGestureRecognizer];
+        
+        self.downSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+        self.downSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+        [self addGestureRecognizer:self.downSwipeGestureRecognizer];
         
         self.evaluateTimer = [RNTimer repeatingTimerWithTimeInterval:1.2 block:^{
             [self attemptDetectionOfMorseCode:self.currentCode];
@@ -129,6 +149,26 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.evaluateTimer resume];
         });
+    }
+}
+
+- (void)swipe:(UISwipeGestureRecognizer *)swipeGestureRecognizer {
+    if (swipeGestureRecognizer == self.leftSwipeGestureRecognizer) {
+        if ([self.delegate respondsToSelector:@selector(morseCodeGestureViewDidRecognizeBackspaceEvent:)]) {
+            [self.delegate morseCodeGestureViewDidRecognizeBackspaceEvent:self];
+        }
+    } else if (swipeGestureRecognizer == self.rightSwipeGestureRecognizer) {
+        if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
+            [self.delegate morseCodeGestureView:self didRecognizeCharacter:' '];
+        }
+    } else if (swipeGestureRecognizer == self.upSwipeGestureRecognizer) {
+        if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
+            [self.delegate morseCodeGestureViewDidRecognizeCapsToggleEvent:self];
+        }
+    } else if (swipeGestureRecognizer == self.downSwipeGestureRecognizer) {
+        if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
+            [self.delegate morseCodeGestureViewDidRecognizeReturnKeyEvent:self];
+        }
     }
 }
 
