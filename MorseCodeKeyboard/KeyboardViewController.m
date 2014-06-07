@@ -12,6 +12,7 @@
 @interface KeyboardViewController () <MorseCodeGestureViewDelegate>
 
 @property (nonatomic, strong) MorseCodeGestureView *gestureView;
+@property (nonatomic) BOOL capsOn;
 
 @end
 
@@ -20,21 +21,22 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Perform custom initialization work here
     }
     return self;
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
 - (void)updateViewConstraints {
     [super updateViewConstraints];
-    
     // Add custom view sizing constraints here
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Perform custom UI setup here
     self.gestureView = [[MorseCodeGestureView alloc] initWithFrame:CGRectZero];
     self.gestureView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     self.gestureView.delegate = self;
@@ -53,19 +55,14 @@
                                 gestureViewHeightConstraint]];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated
-}
-
 - (void)textWillChange:(id<UITextInput>)textInput {
     // The app is about to change the document's contents. Perform any preparation here.
 }
 
 - (void)textDidChange:(id<UITextInput>)textInput {
     // The app has just changed the document's contents, the document context has been updated.
-    
     UIColor *textColor = nil;
+    
     if (self.textDocumentProxy.keyboardAppearance == UIKeyboardAppearanceDark) {
         textColor = [UIColor whiteColor];
     } else {
@@ -88,6 +85,7 @@
 }
 
 - (void)morseCodeGestureViewDidRecognizeCapsToggleEvent:(MorseCodeGestureView *)morseCodeView {
+    self.capsOn = !self.capsOn;
 }
 
 - (void)morseCodeGestureViewDidRecognizeReturnKeyEvent:(MorseCodeGestureView *)morseCodeView {

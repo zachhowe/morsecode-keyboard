@@ -23,11 +23,11 @@
 @property (nonatomic, strong) NSMutableString *currentCode;
 
 @property (nonatomic, strong) UILabel *currentCodeLabel;
-@property (nonatomic, strong) NSMutableDictionary *morseCodeMap;
 
 @end
 
 @implementation MorseCodeGestureView {
+    NSMutableDictionary *_morseCodeMap;
     NSMutableArray *_possibleResults;
 }
 
@@ -65,7 +65,7 @@
         [self addGestureRecognizer:self.downSwipeGestureRecognizer];
         
         self.evaluateTimer = [RNTimer repeatingTimerWithTimeInterval:1.2 block:^{
-            [self attemptDetectionOfMorseCode:self.currentCode];
+            [self evaluateMorseCode:self.currentCode];
         }];
         
         self.currentCodeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -88,13 +88,13 @@
 
 - (void)setup {
     _possibleResults = [NSMutableArray array];
-    self.morseCodeMap = [NSMutableDictionary dictionary];
+    _morseCodeMap = [NSMutableDictionary dictionary];
     
     NSString *map = @".- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --..";
     NSArray *map_s = [map componentsSeparatedByString:@" "];
     
     for (unichar c = 'a'; c <= 'z'; c++) {
-        self.morseCodeMap[[NSString stringWithFormat:@"%c", c]] = map_s[c - 'a'];
+        _morseCodeMap[[NSString stringWithFormat:@"%c", c]] = map_s[c - 'a'];
     }
 }
 
@@ -172,11 +172,11 @@
     }
 }
 
-- (void)attemptDetectionOfMorseCode:(NSString *)morse {
+- (void)evaluateMorseCode:(NSString *)morse {
     __block NSString *result = nil;
     
     if (morse.length > 0) {
-        [self.morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [_morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([obj isEqualToString:morse]) {
                 *stop = YES;
                 result = key;
@@ -202,7 +202,7 @@
     [_possibleResults removeAllObjects];
     
     if (morse.length > 0) {
-        [self.morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [_morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             NSString *commonPrefix = [morse commonPrefixWithString:obj options:NSLiteralSearch];
             if (commonPrefix.length == morse.length) {
                 [_possibleResults addObject:key];
