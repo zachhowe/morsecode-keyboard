@@ -183,9 +183,7 @@
     
     if (morse.length >= 4 && !result) {
         self.currentCode = nil;
-    }
-    
-    if (result) {
+    } else if (result) {
         if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
             [self.delegate morseCodeGestureView:self didRecognizeCharacter:[result characterAtIndex:0]];
         }
@@ -197,7 +195,6 @@
 
 - (void)detectPossibleCharacters:(NSString *)morse {
     [_possibleResults removeAllObjects];
-    
     if (morse.length > 0) {
         [_morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             NSString *commonPrefix = [morse commonPrefixWithString:obj options:NSLiteralSearch];

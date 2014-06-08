@@ -26,6 +26,13 @@
 			remoteGlobalIDString = 8AC54A8A19403C3200F083DC;
 			remoteInfo = MorseCode;
 		};
+		8A0F201019440E9800D792E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC54A8A19403C3200F083DC;
+			remoteInfo = MorseCode;
+		};
 		8AC54AA219403C3200F083DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
@@ -249,6 +256,7 @@
 				8AC91EF719440C010026C45D /* PBXTargetDependency */,
 				8AC91EF919440C720026C45D /* PBXTargetDependency */,
 				8A0F200F19440E9800D792E1 /* PBXTargetDependency */,
+				8A0F201119440E9800D792E1 /* PBXTargetDependency */,
 			);
 			name = MorseCodeTests;
 			productName = MorseCodeTests;
@@ -374,6 +382,11 @@
 			isa = PBXTargetDependency;
 			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
 			targetProxy = 8A0F200E19440E9800D792E1 /* PBXContainerItemProxy */;
+		};
+		8A0F201119440E9800D792E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
+			targetProxy = 8A0F201019440E9800D792E1 /* PBXContainerItemProxy */;
 		};
 		8AC54AA319403C3200F083DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
