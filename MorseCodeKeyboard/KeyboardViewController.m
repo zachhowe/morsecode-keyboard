@@ -31,7 +31,6 @@
 
 - (void)updateViewConstraints {
     [super updateViewConstraints];
-    // Add custom view sizing constraints here
 }
 
 - (void)viewDidLoad {

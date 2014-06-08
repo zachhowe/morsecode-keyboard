@@ -28,7 +28,7 @@
 
 @implementation MorseCodeGestureView {
     NSMutableDictionary *_morseCodeMap;
-    NSMutableArray *_possibleResults;
+    NSMutableOrderedSet *_possibleResults;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -87,7 +87,7 @@
 }
 
 - (void)setup {
-    _possibleResults = [NSMutableArray array];
+    _possibleResults = [NSMutableOrderedSet orderedSet];
     _morseCodeMap = [NSMutableDictionary dictionary];
     
     NSString *map = @".- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --..";
@@ -111,23 +111,17 @@
 }
 
 - (void)tap:(UITapGestureRecognizer *)tapGestureRecognizer {
-    if (!self.currentCode) {
-        self.currentCode = [NSMutableString string];
+    if (tapGestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        if (!self.currentCode) {
+            self.currentCode = [NSMutableString string];
+        }
+        [self.currentCode appendString:@"."];
+        [self detectPossibleCharacters:self.currentCode];
+        [self updateCurrentCodeLabel];
+        
+        [self flashKeyboardColor:[UIColor redColor]];
+        [self restartEvaluateTimer];
     }
-    [self.currentCode appendString:@"."];
-    [self detectPossibleCharacters:self.currentCode];
-    [self updateCurrentCodeLabel];
-    
-    UIColor *oldColor = self.backgroundColor;
-    self.backgroundColor = [UIColor redColor];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        self.backgroundColor = oldColor;
-    });
-    
-    [self.evaluateTimer suspend];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.evaluateTimer resume];
-    });
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)longPressGestureRecognizer {
@@ -139,16 +133,8 @@
         [self detectPossibleCharacters:self.currentCode];
         [self updateCurrentCodeLabel];
         
-        UIColor *oldColor = self.backgroundColor;
-        self.backgroundColor = [UIColor blueColor];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.backgroundColor = oldColor;
-        });
-        
-        [self.evaluateTimer suspend];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self.evaluateTimer resume];
-        });
+        [self flashKeyboardColor:[UIColor blueColor]];
+        [self restartEvaluateTimer];
     }
 }
 
@@ -170,6 +156,13 @@
             [self.delegate morseCodeGestureViewDidRecognizeReturnKeyEvent:self];
         }
     }
+}
+
+- (void)restartEvaluateTimer {
+    [self.evaluateTimer suspend];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.evaluateTimer resume];
+    });
 }
 
 - (void)evaluateMorseCode:(NSString *)morse {
@@ -205,10 +198,22 @@
         [_morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             NSString *commonPrefix = [morse commonPrefixWithString:obj options:NSLiteralSearch];
             if (commonPrefix.length == morse.length) {
-                [_possibleResults addObject:key];
+                if ([obj isEqualToString:morse]) {
+                    [_possibleResults insertObject:key atIndex:0];
+                } else {
+                    [_possibleResults addObject:key];
+                }
             }
         }];
     }
+}
+
+- (void)flashKeyboardColor:(UIColor *)color {
+    UIColor *oldColor = self.backgroundColor;
+    self.backgroundColor = color;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.backgroundColor = oldColor;
+    });
 }
 
 - (void)updateCurrentCodeLabel {
@@ -218,7 +223,7 @@
         [status appendFormat:@"%@", self.currentCode];
         
         if (_possibleResults.count > 0) {
-            [status appendFormat:@"\n\n[%@]", [_possibleResults componentsJoinedByString:@", "]];
+            [status appendFormat:@"\n\n[%@]", [[_possibleResults array] componentsJoinedByString:@", "]];
         }
     }
     
