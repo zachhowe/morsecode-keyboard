@@ -16,10 +16,16 @@
 		8AC54ABB19403C4700F083DC /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54ABA19403C4700F083DC /* KeyboardViewController.m */; };
 		8AC54ABE19403C4700F083DC /* la.zach.MorseCode.MorseCodeKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8AC54AB519403C4600F083DC /* la.zach.MorseCode.MorseCodeKeyboard.appex */; };
 		8AC54AC719403CF700F083DC /* MorseCodeGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AC619403CF700F083DC /* MorseCodeGestureView.m */; };
-		8AC54ACA194045E200F083DC /* RNTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AC9194045E200F083DC /* RNTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8A0F200E19440E9800D792E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC54A8A19403C3200F083DC;
+			remoteInfo = MorseCode;
+		};
 		8AC54AA219403C3200F083DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
@@ -40,6 +46,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8AC54AB419403C4600F083DC;
 			remoteInfo = MorseCodeKeyboard;
+		};
+		8AC91EF419440C000026C45D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC54A8A19403C3200F083DC;
+			remoteInfo = MorseCode;
+		};
+		8AC91EF619440C010026C45D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC54A8A19403C3200F083DC;
+			remoteInfo = MorseCode;
+		};
+		8AC91EF819440C720026C45D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8AC54A8319403C3200F083DC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AC54A8A19403C3200F083DC;
+			remoteInfo = MorseCode;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -76,8 +103,6 @@
 		8AC54ABA19403C4700F083DC /* KeyboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		8AC54AC519403CF700F083DC /* MorseCodeGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MorseCodeGestureView.h; sourceTree = "<group>"; };
 		8AC54AC619403CF700F083DC /* MorseCodeGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MorseCodeGestureView.m; sourceTree = "<group>"; };
-		8AC54AC8194045E200F083DC /* RNTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNTimer.h; sourceTree = "<group>"; };
-		8AC54AC9194045E200F083DC /* RNTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				8AC54A8D19403C3200F083DC /* MorseCode */,
-				8AC54AA419403C3200F083DC /* MorseCodeTests */,
 				8AC54AB619403C4700F083DC /* MorseCodeKeyboard */,
+				8AC54AA419403C3200F083DC /* MorseCodeTests */,
 				8AC54A8C19403C3200F083DC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -168,8 +193,6 @@
 		8AC54AB619403C4700F083DC /* MorseCodeKeyboard */ = {
 			isa = PBXGroup;
 			children = (
-				8AC54AC8194045E200F083DC /* RNTimer.h */,
-				8AC54AC9194045E200F083DC /* RNTimer.m */,
 				8AC54AB919403C4700F083DC /* KeyboardViewController.h */,
 				8AC54ABA19403C4700F083DC /* KeyboardViewController.m */,
 				8AC54AC519403CF700F083DC /* MorseCodeGestureView.h */,
@@ -222,6 +245,10 @@
 			);
 			dependencies = (
 				8AC54AA319403C3200F083DC /* PBXTargetDependency */,
+				8AC91EF519440C000026C45D /* PBXTargetDependency */,
+				8AC91EF719440C010026C45D /* PBXTargetDependency */,
+				8AC91EF919440C720026C45D /* PBXTargetDependency */,
+				8A0F200F19440E9800D792E1 /* PBXTargetDependency */,
 			);
 			name = MorseCodeTests;
 			productName = MorseCodeTests;
@@ -280,8 +307,8 @@
 			projectRoot = "";
 			targets = (
 				8AC54A8A19403C3200F083DC /* MorseCode */,
-				8AC54AA019403C3200F083DC /* MorseCodeTests */,
 				8AC54AB419403C4600F083DC /* MorseCodeKeyboard */,
+				8AC54AA019403C3200F083DC /* MorseCodeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -337,13 +364,17 @@
 			files = (
 				8AC54AC719403CF700F083DC /* MorseCodeGestureView.m in Sources */,
 				8AC54ABB19403C4700F083DC /* KeyboardViewController.m in Sources */,
-				8AC54ACA194045E200F083DC /* RNTimer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8A0F200F19440E9800D792E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
+			targetProxy = 8A0F200E19440E9800D792E1 /* PBXContainerItemProxy */;
+		};
 		8AC54AA319403C3200F083DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
@@ -358,6 +389,21 @@
 			isa = PBXTargetDependency;
 			target = 8AC54AB419403C4600F083DC /* MorseCodeKeyboard */;
 			targetProxy = 8AC54ABF19403C4700F083DC /* PBXContainerItemProxy */;
+		};
+		8AC91EF519440C000026C45D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
+			targetProxy = 8AC91EF419440C000026C45D /* PBXContainerItemProxy */;
+		};
+		8AC91EF719440C010026C45D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
+			targetProxy = 8AC91EF619440C010026C45D /* PBXContainerItemProxy */;
+		};
+		8AC91EF919440C720026C45D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8AC54A8A19403C3200F083DC /* MorseCode */;
+			targetProxy = 8AC91EF819440C720026C45D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -552,6 +598,7 @@
 				8AC54AAD19403C3200F083DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8AC54AAE19403C3200F083DC /* Build configuration list for PBXNativeTarget "MorseCodeTests" */ = {
 			isa = XCConfigurationList;
@@ -560,6 +607,7 @@
 				8AC54AB019403C3200F083DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8AC54AC119403C4700F083DC /* Build configuration list for PBXNativeTarget "MorseCodeKeyboard" */ = {
 			isa = XCConfigurationList;
@@ -568,6 +616,7 @@
 				8AC54AC319403C4700F083DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

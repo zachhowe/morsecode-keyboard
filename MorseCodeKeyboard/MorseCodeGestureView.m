@@ -8,8 +8,6 @@
 
 #import "MorseCodeGestureView.h"
 
-#import "RNTimer.h"
-
 @interface MorseCodeGestureView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
@@ -19,7 +17,7 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer *downSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *upSwipeGestureRecognizer;
 
-@property (nonatomic, strong) RNTimer *evaluateTimer;
+@property (nonatomic, strong) NSTimer *evaluateTimer;
 @property (nonatomic, strong) NSMutableString *currentCode;
 
 @property (nonatomic, strong) UILabel *currentCodeLabel;
@@ -64,10 +62,6 @@
         self.downSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
         [self addGestureRecognizer:self.downSwipeGestureRecognizer];
         
-        self.evaluateTimer = [RNTimer repeatingTimerWithTimeInterval:1.2 block:^{
-            [self evaluateMorseCode:self.currentCode];
-        }];
-        
         self.currentCodeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         self.currentCodeLabel.textAlignment = NSTextAlignmentCenter;
         self.currentCodeLabel.font = [UIFont fontWithName:@"Menlo" size:16.0];
@@ -90,12 +84,13 @@
     _possibleResults = [NSMutableOrderedSet orderedSet];
     _morseCodeMap = [NSMutableDictionary dictionary];
     
-    NSString *map = @".- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --..";
-    NSArray *map_s = [map componentsSeparatedByString:@" "];
+    NSArray *morseCodes = [@".- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --.." componentsSeparatedByString:@" "];
     
     for (unichar c = 'a'; c <= 'z'; c++) {
-        _morseCodeMap[[NSString stringWithFormat:@"%c", c]] = map_s[c - 'a'];
+        _morseCodeMap[[NSString stringWithFormat:@"%c", c]] = morseCodes[c - 'a'];
     }
+    
+    [self restartEvaluateTimer];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -159,10 +154,19 @@
 }
 
 - (void)restartEvaluateTimer {
-    [self.evaluateTimer suspend];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.evaluateTimer resume];
-    });
+    if (!self.evaluateTimer.isValid) {
+        self.evaluateTimer = [NSTimer scheduledTimerWithTimeInterval:1.2 target:self selector:@selector(evaluateTimerFire) userInfo:nil repeats:YES];
+    } else {
+        [self.evaluateTimer invalidate];
+        dispatch_time_t waitTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC));
+        dispatch_after(waitTime, dispatch_get_main_queue(), ^{
+            [self restartEvaluateTimer];
+        });
+    }
+}
+
+- (void)evaluateTimerFire {
+    [self evaluateMorseCode:self.currentCode];
 }
 
 - (void)evaluateMorseCode:(NSString *)morse {
@@ -177,7 +181,7 @@
         }];
     }
     
-    if (morse.length > 4 && !result) {
+    if (morse.length >= 4 && !result) {
         self.currentCode = nil;
     }
     
@@ -211,7 +215,8 @@
 - (void)flashKeyboardColor:(UIColor *)color {
     UIColor *oldColor = self.backgroundColor;
     self.backgroundColor = color;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_time_t waitTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
+    dispatch_after(waitTime, dispatch_get_main_queue(), ^{
         self.backgroundColor = oldColor;
     });
 }
