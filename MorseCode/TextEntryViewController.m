@@ -6,13 +6,13 @@
 //  Copyright (c) 2014 Zach Howe. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "TextEntryViewController.h"
 
-@interface ViewController ()
+@interface TextEntryViewController ()
 
 @end
 
-@implementation ViewController
+@implementation TextEntryViewController
             
 - (void)viewDidLoad {
     [super viewDidLoad];

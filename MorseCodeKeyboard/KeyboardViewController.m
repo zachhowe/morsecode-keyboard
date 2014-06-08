@@ -19,28 +19,14 @@
 
 @implementation KeyboardViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
-    return self;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)updateViewConstraints {
-    [super updateViewConstraints];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.gestureView = [[MorseCodeGestureView alloc] initWithFrame:CGRectZero];
-    self.gestureView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
-    self.gestureView.delegate = self;
+//    self.gestureView.backgroundColor = [UIColor colorWithRed:71.0/255.0 green:203.0/255.0 blue:253.0/255.0 alpha:1.0];
+    self.gestureView.backgroundColor = [UIColor clearColor];
     self.gestureView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.gestureView.delegate = self;
     
     [self.view addSubview:self.gestureView];
     
