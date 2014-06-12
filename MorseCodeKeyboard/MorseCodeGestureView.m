@@ -114,7 +114,7 @@
         [self detectPossibleCharacters:self.currentCode];
         [self updateCurrentCodeLabel];
         
-        [self flashKeyboardColor:[UIColor redColor]];
+        [self provideFeedbackForKeyEvent:MorseCodeEventDot];
         [self restartEvaluateTimer];
     }
 }
@@ -128,7 +128,7 @@
         [self detectPossibleCharacters:self.currentCode];
         [self updateCurrentCodeLabel];
         
-        [self flashKeyboardColor:[UIColor blueColor]];
+        [self provideFeedbackForKeyEvent:MorseCodeEventDash];
         [self restartEvaluateTimer];
     }
 }
@@ -209,12 +209,24 @@
     }
 }
 
+- (void)provideFeedbackForKeyEvent:(MorseCodeEvent)keyEvent {
+    switch (keyEvent) {
+        case MorseCodeEventDot:
+            [self flashKeyboardColor:[UIColor redColor]];
+            break;
+        case MorseCodeEventDash:
+            [self flashKeyboardColor:[UIColor blueColor]];
+            break;
+        default:
+            break;
+    }
+}
+
 - (void)flashKeyboardColor:(UIColor *)color {
-    UIColor *oldColor = self.backgroundColor;
     self.backgroundColor = color;
     dispatch_time_t waitTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
     dispatch_after(waitTime, dispatch_get_main_queue(), ^{
-        self.backgroundColor = oldColor;
+        self.backgroundColor = [UIColor clearColor];
     });
 }
 

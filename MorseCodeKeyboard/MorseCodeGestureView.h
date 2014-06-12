@@ -10,15 +10,25 @@
 
 @class MorseCodeGestureView;
 
+typedef NS_ENUM(NSUInteger, MorseCodeEvent) {
+    MorseCodeEventDot,
+    MorseCodeEventDash
+};
+
 @protocol MorseCodeGestureViewDelegate <NSObject>
 
 @optional
 
+// Input events
 - (void)morseCodeGestureView:(MorseCodeGestureView *)morseCodeView didRecognizeCharacter:(unichar)character;
 - (void)morseCodeGestureViewDidRecognizeSpaceEvent:(MorseCodeGestureView *)morseCodeView;
 - (void)morseCodeGestureViewDidRecognizeBackspaceEvent:(MorseCodeGestureView *)morseCodeView;
 - (void)morseCodeGestureViewDidRecognizeCapsToggleEvent:(MorseCodeGestureView *)morseCodeView;
 - (void)morseCodeGestureViewDidRecognizeReturnKeyEvent:(MorseCodeGestureView *)morseCodeView;
+
+// Other keyboard events
+- (void)morseCodeGestureViewDidRecognizeKeyboardShouldClose:(MorseCodeGestureView *)morseCodeView;
+- (void)morseCodeGestureViewDidRecognizeKeyboardShouldAdvance:(MorseCodeGestureView *)morseCodeView;
 
 @end
 
