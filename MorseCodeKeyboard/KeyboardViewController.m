@@ -23,7 +23,6 @@
     [super viewDidLoad];
     
     self.gestureView = [[MorseCodeGestureView alloc] initWithFrame:CGRectZero];
-//    self.gestureView.backgroundColor = [UIColor colorWithRed:71.0/255.0 green:203.0/255.0 blue:253.0/255.0 alpha:1.0];
     self.gestureView.backgroundColor = [UIColor clearColor];
     self.gestureView.translatesAutoresizingMaskIntoConstraints = NO;
     self.gestureView.delegate = self;
