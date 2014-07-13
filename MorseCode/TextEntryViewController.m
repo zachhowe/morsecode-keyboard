@@ -8,7 +8,11 @@
 
 #import "TextEntryViewController.h"
 
-@interface TextEntryViewController ()
+#import "KeyboardViewController.h"
+
+@interface TextEntryViewController () <UITextViewDelegate>
+
+@property (nonatomic, weak) IBOutlet UITextView *textView;
 
 @end
 
