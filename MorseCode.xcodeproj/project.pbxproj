@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8A2E7F5F19441ED3001C5871 /* LaunchScreenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A2E7F5E19441ED3001C5871 /* LaunchScreenView.xib */; };
-		8A2E7F6019442341001C5871 /* LaunchScreenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A2E7F5E19441ED3001C5871 /* LaunchScreenView.xib */; };
 		8A2E7F61194423D0001C5871 /* la.zach.morsecodekeyboard.keyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8AC54AB519403C4600F083DC /* la.zach.morsecodekeyboard.keyboard.appex */; };
 		8AC54A9119403C3200F083DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54A9019403C3200F083DC /* main.m */; };
 		8AC54A9419403C3200F083DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54A9319403C3200F083DC /* AppDelegate.m */; };
@@ -122,7 +120,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8A2E7F5E19441ED3001C5871 /* LaunchScreenView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreenView.xib; sourceTree = "<group>"; };
 		8AC54A8B19403C3200F083DC /* MorseCode.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MorseCode.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC54A8F19403C3200F083DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8AC54A9019403C3200F083DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -191,7 +188,6 @@
 		8AC54A8D19403C3200F083DC /* MorseCode */ = {
 			isa = PBXGroup;
 			children = (
-				8A2E7F5E19441ED3001C5871 /* LaunchScreenView.xib */,
 				8AC54A9219403C3200F083DC /* AppDelegate.h */,
 				8AC54A9319403C3200F083DC /* AppDelegate.m */,
 				8AC54A9519403C3200F083DC /* TextEntryViewController.h */,
@@ -365,7 +361,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC54A9A19403C3200F083DC /* Main.storyboard in Resources */,
-				8A2E7F5F19441ED3001C5871 /* LaunchScreenView.xib in Resources */,
 				8AC54A9C19403C3200F083DC /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,7 +376,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A2E7F6019442341001C5871 /* LaunchScreenView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
