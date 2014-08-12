@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>58AD1197-FB79-41A7-AD36-ECB4EE2C0462</string>
+	<key>IDESourceControlProjectName</key>
+	<string>MorseCode</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DB579618272221548486E3388A603D3B7071DCE4</key>
+		<string>https://github.com/zachhowe/morsecode-keyboard.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>MorseCode.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DB579618272221548486E3388A603D3B7071DCE4</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/zachhowe/morsecode-keyboard.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DB579618272221548486E3388A603D3B7071DCE4</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DB579618272221548486E3388A603D3B7071DCE4</string>
+			<key>IDESourceControlWCCName</key>
+			<string>morsecode-keyboard</string>
+		</dict>
+	</array>
+</dict>
+</plist>

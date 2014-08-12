@@ -41,7 +41,7 @@
         [self addGestureRecognizer:self.tapGestureRecognizer];
         
         self.longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-        self.longPressGestureRecognizer.minimumPressDuration = 0.25;
+        self.longPressGestureRecognizer.minimumPressDuration = 0.20;
         self.longPressGestureRecognizer.numberOfTapsRequired = 0;
         self.longPressGestureRecognizer.delegate = self;
         [self addGestureRecognizer:self.longPressGestureRecognizer];
@@ -62,20 +62,21 @@
         self.downSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
         [self addGestureRecognizer:self.downSwipeGestureRecognizer];
         
-        self.currentCodeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        self.currentCodeLabel = [[UILabel alloc] initWithFrame:frame];
+        self.currentCodeLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         self.currentCodeLabel.textAlignment = NSTextAlignmentCenter;
         self.currentCodeLabel.font = [UIFont fontWithName:@"Menlo" size:16.0];
-        self.currentCodeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        self.currentCodeLabel.translatesAutoresizingMaskIntoConstraints = YES;
         self.currentCodeLabel.numberOfLines = 3;
         [self.currentCodeLabel sizeToFit];
         [self addSubview:self.currentCodeLabel];
         
-        NSLayoutConstraint *labelTopConstraint = [NSLayoutConstraint constraintWithItem:self.currentCodeLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelLeftConstraint = [NSLayoutConstraint constraintWithItem:self.currentCodeLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelWidthConstraint = [NSLayoutConstraint constraintWithItem:self.currentCodeLabel attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelHeightConstraint = [NSLayoutConstraint constraintWithItem:self.currentCodeLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *labelTopConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *labelLeftConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *labelWidthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *labelHeightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
         
-        [self addConstraints:@[labelTopConstraint, labelLeftConstraint, labelWidthConstraint, labelHeightConstraint]];
+        [NSLayoutConstraint activateConstraints:@[labelTopConstraint, labelLeftConstraint, labelWidthConstraint, labelHeightConstraint]];
     }
     return self;
 }
@@ -134,6 +135,11 @@
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)swipeGestureRecognizer {
+    if (self.currentCode.length > 0) {
+        self.currentCode = [NSMutableString string];
+        [self updateCurrentCodeLabel];
+    }
+    
     if (swipeGestureRecognizer == self.leftSwipeGestureRecognizer) {
         if ([self.delegate respondsToSelector:@selector(morseCodeGestureViewDidRecognizeBackspaceEvent:)]) {
             [self.delegate morseCodeGestureViewDidRecognizeBackspaceEvent:self];
