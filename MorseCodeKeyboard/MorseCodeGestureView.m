@@ -71,14 +71,24 @@
         [self.currentCodeLabel sizeToFit];
         [self addSubview:self.currentCodeLabel];
         
-        NSLayoutConstraint *labelTopConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelLeftConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelWidthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelHeightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
-        
-        [NSLayoutConstraint activateConstraints:@[labelTopConstraint, labelLeftConstraint, labelWidthConstraint, labelHeightConstraint]];
+        [self updateConstraintsIfNeeded];
     }
     return self;
+}
+
+- (void)updateConstraints
+{
+    NSLayoutConstraint *labelTopConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *labelLeftConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *labelWidthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *labelHeightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
+    
+    [NSLayoutConstraint activateConstraints:@[labelTopConstraint,
+                                              labelLeftConstraint,
+                                              labelWidthConstraint,
+                                              labelHeightConstraint]];
+    
+    [super updateConstraints];
 }
 
 - (void)setup {

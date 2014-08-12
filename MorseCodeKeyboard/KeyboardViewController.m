@@ -29,6 +29,7 @@
     self.gestureView.delegate = self;
     
     self.nextKeyboardButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.nextKeyboardButton.hidden = self.nextKeyboardButtonHidden;
     [self.nextKeyboardButton setTitle:@"Next Keyboard" forState:UIControlStateNormal];
     [self.nextKeyboardButton addTarget:self action:@selector(advanceToNextInputMode) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.nextKeyboardButton];
@@ -42,24 +43,35 @@
 - (void)updateViewConstraints {
     [super updateViewConstraints];
     
+    CGFloat gestureViewHeightModifier = 0.0;
+    
+    if (!self.nextKeyboardButtonHidden) {
+        gestureViewHeightModifier = -44.0;
+    } else {
+        gestureViewHeightModifier = 0.0;
+    }
+    
     NSLayoutConstraint *gestureViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.gestureView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
     NSLayoutConstraint *gestureViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.gestureView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
     NSLayoutConstraint *gestureViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.gestureView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
-    NSLayoutConstraint *gestureViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.gestureView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:-44.0];
-    
-    NSLayoutConstraint *nextKeyboardButtonTopConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.gestureView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
-    NSLayoutConstraint *nextKeyboardButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
-    NSLayoutConstraint *nextKeyboardButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.gestureView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
-    NSLayoutConstraint *nextKeyboardButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0];
+    NSLayoutConstraint *gestureViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.gestureView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:gestureViewHeightModifier];
     
     [NSLayoutConstraint activateConstraints:@[gestureViewTopConstraint,
                                               gestureViewLeftConstraint,
                                               gestureViewWidthConstraint,
-                                              gestureViewHeightConstraint,
-                                              nextKeyboardButtonTopConstraint,
-                                              nextKeyboardButtonBottomConstraint,
-                                              nextKeyboardButtonWidthConstraint,
-                                              nextKeyboardButtonHeightConstraint]];
+                                              gestureViewHeightConstraint]];
+    
+    if (!self.nextKeyboardButtonHidden) {
+        NSLayoutConstraint *nextKeyboardButtonTopConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.gestureView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *nextKeyboardButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *nextKeyboardButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.gestureView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
+        NSLayoutConstraint *nextKeyboardButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0];
+        
+        [NSLayoutConstraint activateConstraints:@[nextKeyboardButtonTopConstraint,
+                                                  nextKeyboardButtonBottomConstraint,
+                                                  nextKeyboardButtonWidthConstraint,
+                                                  nextKeyboardButtonHeightConstraint]];
+    }
 }
 
 - (void)viewDidLoad {
@@ -76,6 +88,15 @@
 }
 
 - (void)textDidChange:(id<UITextInput>)textInput {
+}
+
+#pragma mark - Properties
+
+- (void)setNextKeyboardButtonHidden:(BOOL)nextKeyboardButtonHidden {
+    if (_nextKeyboardButtonHidden != nextKeyboardButtonHidden) {
+        _nextKeyboardButtonHidden = nextKeyboardButtonHidden;
+        self.nextKeyboardButton.hidden = self.nextKeyboardButtonHidden;
+    }
 }
 
 #pragma mark - Morse Code Gesture View Delegate

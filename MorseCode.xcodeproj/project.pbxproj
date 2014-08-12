@@ -8,13 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		8A2E7F61194423D0001C5871 /* la.zach.morsecodekeyboard.keyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 8AC54AB519403C4600F083DC /* la.zach.morsecodekeyboard.keyboard.appex */; };
+		8AB6EE92199AC3AE00E448DD /* MorseCodeGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AC619403CF700F083DC /* MorseCodeGestureView.m */; };
+		8AB6EE93199AC91D00E448DD /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54ABA19403C4700F083DC /* KeyboardViewController.m */; };
+		8AB6EE94199AC91E00E448DD /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54ABA19403C4700F083DC /* KeyboardViewController.m */; };
 		8AC54A9119403C3200F083DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54A9019403C3200F083DC /* main.m */; };
 		8AC54A9419403C3200F083DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54A9319403C3200F083DC /* AppDelegate.m */; };
 		8AC54A9719403C3200F083DC /* TextEntryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54A9619403C3200F083DC /* TextEntryViewController.m */; };
 		8AC54A9A19403C3200F083DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8AC54A9819403C3200F083DC /* Main.storyboard */; };
 		8AC54A9C19403C3200F083DC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AC54A9B19403C3200F083DC /* Images.xcassets */; };
 		8AC54AA819403C3200F083DC /* MorseCodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AA719403C3200F083DC /* MorseCodeTests.m */; };
-		8AC54ABB19403C4700F083DC /* KeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54ABA19403C4700F083DC /* KeyboardViewController.m */; };
 		8AC54AC719403CF700F083DC /* MorseCodeGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AC619403CF700F083DC /* MorseCodeGestureView.m */; };
 /* End PBXBuildFile section */
 
@@ -386,8 +388,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AB6EE92199AC3AE00E448DD /* MorseCodeGestureView.m in Sources */,
 				8AC54A9719403C3200F083DC /* TextEntryViewController.m in Sources */,
 				8AC54A9419403C3200F083DC /* AppDelegate.m in Sources */,
+				8AB6EE93199AC91D00E448DD /* KeyboardViewController.m in Sources */,
 				8AC54A9119403C3200F083DC /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -405,7 +409,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC54AC719403CF700F083DC /* MorseCodeGestureView.m in Sources */,
-				8AC54ABB19403C4700F083DC /* KeyboardViewController.m in Sources */,
+				8AB6EE94199AC91E00E448DD /* KeyboardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,7 +576,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -586,7 +590,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
