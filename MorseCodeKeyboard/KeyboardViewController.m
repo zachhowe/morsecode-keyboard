@@ -36,7 +36,7 @@
     self.gestureView.translatesAutoresizingMaskIntoConstraints = NO;
     self.nextKeyboardButton.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [self.view addSubview:self.gestureView];
+    [self.inputView addSubview:self.gestureView];
 }
 
 - (void)updateViewConstraints {
@@ -48,17 +48,9 @@
     NSLayoutConstraint *gestureViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.gestureView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeHeight multiplier:1.0 constant:-44.0];
     
     NSLayoutConstraint *nextKeyboardButtonTopConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.gestureView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
-    
     NSLayoutConstraint *nextKeyboardButtonBottomConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
-    
     NSLayoutConstraint *nextKeyboardButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.gestureView attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
-    
     NSLayoutConstraint *nextKeyboardButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.nextKeyboardButton attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:44.0];
-    
-//    [self.view addConstraints:@[gestureViewTopConstraint,
-//                                gestureViewLeftConstraint,
-//                                gestureViewWidthConstraint,
-//                                gestureViewHeightConstraint]];
     
     [NSLayoutConstraint activateConstraints:@[gestureViewTopConstraint,
                                               gestureViewLeftConstraint,
@@ -81,11 +73,9 @@
 }
 
 - (void)textWillChange:(id<UITextInput>)textInput {
-    // The app is about to change the document's contents. Perform any preparation here.
 }
 
 - (void)textDidChange:(id<UITextInput>)textInput {
-    // The app has just changed the document's contents, the document context has been updated.
 }
 
 #pragma mark - Morse Code Gesture View Delegate
