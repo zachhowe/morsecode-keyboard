@@ -8,7 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
+#import "MorseCodeHelper.h"
+
 @interface MorseCodeTests : XCTestCase
+
+@property (nonatomic, strong) MorseCodeHelper *morseCodeHelper;
 
 @end
 
@@ -16,24 +20,29 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+    self.morseCodeHelper = [[MorseCodeHelper alloc] init];
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    self.morseCodeHelper = nil;
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
+- (void)testTranslateMorseCodeSuccess {
+    NSString *morse = @".-";
+    NSString *expectedTranslation = @"a";
+    
+    NSString *translation = [self.morseCodeHelper translateMorseCode:morse];
+    
+    XCTAssertEqualObjects(translation, expectedTranslation, @"Morse code '%@' should be translate to '%@'", morse, expectedTranslation);
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testTranslateMorseCodeFailure {
+    NSString *morse = @".--.-.-";
+    
+    NSString *translation = [self.morseCodeHelper translateMorseCode:morse];
+    
+    XCTAssertEqualObjects(translation, nil, @"Morse code '%@' should be translate to nil object", morse);
 }
 
 @end

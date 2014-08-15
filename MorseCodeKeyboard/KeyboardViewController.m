@@ -9,12 +9,16 @@
 #import "KeyboardViewController.h"
 
 #import "MorseCodeGestureView.h"
+#import "MorseCodeHelper.h"
 
 @interface KeyboardViewController () <MorseCodeGestureViewDelegate>
 
 @property (nonatomic, strong) MorseCodeGestureView *gestureView;
 @property (nonatomic, strong) UIButton *nextKeyboardButton;
+@property (nonatomic, strong) UIButton *dismissKeyboardButton;
 @property (nonatomic) BOOL capsOn;
+
+@property (nonatomic, strong) MorseCodeHelper *morseCodeHelper;
 
 @end
 
@@ -30,12 +34,17 @@
     
     self.nextKeyboardButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.nextKeyboardButton.hidden = self.nextKeyboardButtonHidden;
+    self.nextKeyboardButton.translatesAutoresizingMaskIntoConstraints = NO;
     [self.nextKeyboardButton setTitle:@"Next Keyboard" forState:UIControlStateNormal];
     [self.nextKeyboardButton addTarget:self action:@selector(advanceToNextInputMode) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.nextKeyboardButton];
     
-    self.gestureView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.nextKeyboardButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.dismissKeyboardButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.dismissKeyboardButton.hidden = self.dismissKeyboardButtonHidden;
+    self.dismissKeyboardButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.dismissKeyboardButton setTitle:@"Dismiss Keyboard" forState:UIControlStateNormal];
+    [self.dismissKeyboardButton addTarget:self action:@selector(dismissKeyboard) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:self.dismissKeyboardButton];
     
     [self.inputView addSubview:self.gestureView];
 }
@@ -76,6 +85,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.morseCodeHelper = [[MorseCodeHelper alloc] init];
 }
 
 - (void)selectionWillChange:(id <UITextInput>)textInput {
@@ -101,8 +112,32 @@
 
 #pragma mark - Morse Code Gesture View Delegate
 
+- (void)morseCodeGestureView:(MorseCodeGestureView *)morseCodeView displayShouldUpdateWithMorseCode:(NSString *)currentMorseCode {
+    NSMutableString *status = [NSMutableString string];
+    if (currentMorseCode.length > 0) {
+        [status appendFormat:@"%@", currentMorseCode];
+        
+        NSArray *possibleResults = [self.morseCodeHelper detectPossibleCharacters:currentMorseCode];
+        if (possibleResults.count > 0) {
+            NSString *possibleResultsList = [possibleResults componentsJoinedByString:@", "];
+            if (self.capsOn) {
+                possibleResultsList = [possibleResultsList uppercaseString];
+            }
+            [status appendFormat:@"\n\n[%@]", possibleResultsList];
+        }
+    }
+    self.gestureView.currentCodeLabel.text = status;
+}
+
+- (void)morseCodeGestureView:(MorseCodeGestureView *)morseCodeView provideFeedbackForEvent:(MorseCodeEvent)morseCodeEvent {
+}
+
 - (void)morseCodeGestureView:(MorseCodeGestureView *)morseCodeView didRecognizeCharacter:(unichar)character {
-    [self.textDocumentProxy insertText:[NSString stringWithFormat:@"%c", character]];
+    NSString *characterStr = [NSString stringWithFormat:@"%c", character];
+    if (self.capsOn) {
+        characterStr = [characterStr uppercaseString];
+    }
+    [self.textDocumentProxy insertText:characterStr];
 }
 
 - (void)morseCodeGestureViewDidRecognizeSpaceEvent:(MorseCodeGestureView *)morseCodeView {
