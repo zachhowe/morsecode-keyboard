@@ -21,6 +21,7 @@
 		8AC54A9C19403C3200F083DC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8AC54A9B19403C3200F083DC /* Images.xcassets */; };
 		8AC54AA819403C3200F083DC /* MorseCodeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AA719403C3200F083DC /* MorseCodeTests.m */; };
 		8AC54AC719403CF700F083DC /* MorseCodeGestureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AC54AC619403CF700F083DC /* MorseCodeGestureView.m */; };
+		8AF2D28C19FACD4B0052B1A8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AF2D28B19FACD4B0052B1A8 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -146,6 +147,7 @@
 		8AC54ABA19403C4700F083DC /* KeyboardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KeyboardViewController.m; sourceTree = "<group>"; };
 		8AC54AC519403CF700F083DC /* MorseCodeGestureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MorseCodeGestureView.h; sourceTree = "<group>"; };
 		8AC54AC619403CF700F083DC /* MorseCodeGestureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MorseCodeGestureView.m; sourceTree = "<group>"; };
+		8AF2D28B19FACD4B0052B1A8 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -217,6 +219,7 @@
 				8AC54A9219403C3200F083DC /* AppDelegate.h */,
 				8AC54A9319403C3200F083DC /* AppDelegate.m */,
 				8AC54A9819403C3200F083DC /* Main.storyboard */,
+				8AF2D28B19FACD4B0052B1A8 /* LaunchScreen.xib */,
 				8AA6C428199EACAF001D4767 /* View Controllers */,
 				8AA6C429199EACB9001D4767 /* Helpers */,
 				8AC54A8E19403C3200F083DC /* Supporting Files */,
@@ -388,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AC54A9A19403C3200F083DC /* Main.storyboard in Resources */,
+				8AF2D28C19FACD4B0052B1A8 /* LaunchScreen.xib in Resources */,
 				8AC54A9C19403C3200F083DC /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -598,7 +602,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = MorseCode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -612,7 +615,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = MorseCode/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
