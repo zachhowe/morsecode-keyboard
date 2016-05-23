@@ -17,6 +17,9 @@ typedef NS_ENUM(NSUInteger, MorseCodeEvent) {
 
 @protocol MorseCodeGestureViewDelegate <NSObject>
 
+- (void)morseCodeGestureView:(MorseCodeGestureView *)morseCodeView displayShouldUpdateWithMorseCode:(NSString *)currentMorseCode;
+- (void)morseCodeGestureView:(MorseCodeGestureView *)morseCodeView provideFeedbackForEvent:(MorseCodeEvent)morseCodeEvent;
+
 @optional
 
 // Input events
@@ -35,5 +38,7 @@ typedef NS_ENUM(NSUInteger, MorseCodeEvent) {
 @interface MorseCodeGestureView : UIView
 
 @property (nonatomic, weak) id<MorseCodeGestureViewDelegate> delegate;
+
+@property (nonatomic, readonly) UILabel *currentCodeLabel;
 
 @end

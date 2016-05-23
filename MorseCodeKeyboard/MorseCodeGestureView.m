@@ -8,6 +8,8 @@
 
 #import "MorseCodeGestureView.h"
 
+#import "MorseCodeHelper.h"
+
 @interface MorseCodeGestureView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
@@ -20,19 +22,20 @@
 @property (nonatomic, strong) NSTimer *evaluateTimer;
 @property (nonatomic, strong) NSMutableString *currentCode;
 
-@property (nonatomic, strong) UILabel *currentCodeLabel;
+@property (nonatomic, strong) MorseCodeHelper *morseCodeHelper;
+
+@property (nonatomic, strong, readwrite) UILabel *currentCodeLabel;
 
 @end
 
-@implementation MorseCodeGestureView {
-    NSMutableDictionary *_morseCodeMap;
-    NSMutableOrderedSet *_possibleResults;
-}
+@implementation MorseCodeGestureView
 
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setup];
+        self.morseCodeHelper = [[MorseCodeHelper alloc] init];
+        
+        [self restartEvaluateTimer];
         
         self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
         self.tapGestureRecognizer.numberOfTapsRequired = 1;
@@ -71,27 +74,24 @@
         [self.currentCodeLabel sizeToFit];
         [self addSubview:self.currentCodeLabel];
         
-        NSLayoutConstraint *labelTopConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelLeftConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelWidthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
-        NSLayoutConstraint *labelHeightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
-        
-        [NSLayoutConstraint activateConstraints:@[labelTopConstraint, labelLeftConstraint, labelWidthConstraint, labelHeightConstraint]];
+        [self updateConstraintsIfNeeded];
     }
     return self;
 }
 
-- (void)setup {
-    _possibleResults = [NSMutableOrderedSet orderedSet];
-    _morseCodeMap = [NSMutableDictionary dictionary];
+- (void)updateConstraints
+{
+    NSLayoutConstraint *labelTopConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *labelLeftConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *labelWidthConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0];
+    NSLayoutConstraint *labelHeightConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.currentCodeLabel attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0.0];
     
-    NSArray *morseCodes = [@".- -... -.-. -.. . ..-. --. .... .. .--- -.- .-.. -- -. --- .--. --.- .-. ... - ..- ...- .-- -..- -.-- --.." componentsSeparatedByString:@" "];
+    [NSLayoutConstraint activateConstraints:@[labelTopConstraint,
+                                              labelLeftConstraint,
+                                              labelWidthConstraint,
+                                              labelHeightConstraint]];
     
-    for (unichar c = 'a'; c <= 'z'; c++) {
-        _morseCodeMap[[NSString stringWithFormat:@"%c", c]] = morseCodes[c - 'a'];
-    }
-    
-    [self restartEvaluateTimer];
+    [super updateConstraints];
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -112,7 +112,6 @@
             self.currentCode = [NSMutableString string];
         }
         [self.currentCode appendString:@"."];
-        [self detectPossibleCharacters:self.currentCode];
         [self updateCurrentCodeLabel];
         
         [self provideFeedbackForKeyEvent:MorseCodeEventDot];
@@ -126,7 +125,6 @@
             self.currentCode = [NSMutableString string];
         }
         [self.currentCode appendString:@"-"];
-        [self detectPossibleCharacters:self.currentCode];
         [self updateCurrentCodeLabel];
         
         [self provideFeedbackForKeyEvent:MorseCodeEventDash];
@@ -135,26 +133,30 @@
 }
 
 - (void)swipe:(UISwipeGestureRecognizer *)swipeGestureRecognizer {
-    if (self.currentCode.length > 0) {
-        self.currentCode = [NSMutableString string];
-        [self updateCurrentCodeLabel];
-    }
-    
-    if (swipeGestureRecognizer == self.leftSwipeGestureRecognizer) {
-        if ([self.delegate respondsToSelector:@selector(morseCodeGestureViewDidRecognizeBackspaceEvent:)]) {
-            [self.delegate morseCodeGestureViewDidRecognizeBackspaceEvent:self];
-        }
-    } else if (swipeGestureRecognizer == self.rightSwipeGestureRecognizer) {
-        if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
-            [self.delegate morseCodeGestureView:self didRecognizeCharacter:' '];
-        }
-    } else if (swipeGestureRecognizer == self.upSwipeGestureRecognizer) {
+    if (swipeGestureRecognizer == self.upSwipeGestureRecognizer) {
         if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
             [self.delegate morseCodeGestureViewDidRecognizeCapsToggleEvent:self];
         }
-    } else if (swipeGestureRecognizer == self.downSwipeGestureRecognizer) {
-        if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
-            [self.delegate morseCodeGestureViewDidRecognizeReturnKeyEvent:self];
+        [self updateCurrentCodeLabel];
+        [self restartEvaluateTimer];
+    } else {
+        if (self.currentCode.length > 0) {
+            self.currentCode = [NSMutableString string];
+            [self updateCurrentCodeLabel];
+        }
+        
+        if (swipeGestureRecognizer == self.leftSwipeGestureRecognizer) {
+            if ([self.delegate respondsToSelector:@selector(morseCodeGestureViewDidRecognizeBackspaceEvent:)]) {
+                [self.delegate morseCodeGestureViewDidRecognizeBackspaceEvent:self];
+            }
+        } else if (swipeGestureRecognizer == self.rightSwipeGestureRecognizer) {
+            if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
+                [self.delegate morseCodeGestureView:self didRecognizeCharacter:' '];
+            }
+        } else if (swipeGestureRecognizer == self.downSwipeGestureRecognizer) {
+            if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
+                [self.delegate morseCodeGestureViewDidRecognizeReturnKeyEvent:self];
+            }
         }
     }
 }
@@ -176,22 +178,13 @@
 }
 
 - (void)evaluateMorseCode:(NSString *)morse {
-    __block NSString *result = nil;
+    NSString *translation = [self.morseCodeHelper translateMorseCode:morse];
     
-    if (morse.length > 0) {
-        [_morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if ([obj isEqualToString:morse]) {
-                *stop = YES;
-                result = key;
-            }
-        }];
-    }
-    
-    if (morse.length >= 4 && !result) {
+    if (morse.length >= 4 && !translation) {
         self.currentCode = nil;
-    } else if (result) {
+    } else if (translation) {
         if ([self.delegate respondsToSelector:@selector(morseCodeGestureView:didRecognizeCharacter:)]) {
-            [self.delegate morseCodeGestureView:self didRecognizeCharacter:[result characterAtIndex:0]];
+            [self.delegate morseCodeGestureView:self didRecognizeCharacter:[translation characterAtIndex:0]];
         }
         self.currentCode = nil;
     }
@@ -199,55 +192,20 @@
     [self updateCurrentCodeLabel];
 }
 
-- (void)detectPossibleCharacters:(NSString *)morse {
-    [_possibleResults removeAllObjects];
-    if (morse.length > 0) {
-        [_morseCodeMap enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            NSString *commonPrefix = [morse commonPrefixWithString:obj options:NSLiteralSearch];
-            if (commonPrefix.length == morse.length) {
-                if ([obj isEqualToString:morse]) {
-                    [_possibleResults insertObject:key atIndex:0];
-                } else {
-                    [_possibleResults addObject:key];
-                }
-            }
-        }];
-    }
-}
-
 - (void)provideFeedbackForKeyEvent:(MorseCodeEvent)keyEvent {
+    // TODO: Implement feedback
     switch (keyEvent) {
         case MorseCodeEventDot:
-            [self flashKeyboardColor:[UIColor redColor]];
             break;
         case MorseCodeEventDash:
-            [self flashKeyboardColor:[UIColor blueColor]];
             break;
         default:
             break;
     }
 }
 
-- (void)flashKeyboardColor:(UIColor *)color {    
-//    self.backgroundColor = color;
-//    dispatch_time_t waitTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC));
-//    dispatch_after(waitTime, dispatch_get_main_queue(), ^{
-//        self.backgroundColor = [UIColor clearColor];
-//    });
-}
-
 - (void)updateCurrentCodeLabel {
-    NSMutableString *status = [NSMutableString string];
-    
-    if (self.currentCode.length > 0) {
-        [status appendFormat:@"%@", self.currentCode];
-        
-        if (_possibleResults.count > 0) {
-            [status appendFormat:@"\n\n[%@]", [[_possibleResults array] componentsJoinedByString:@", "]];
-        }
-    }
-    
-    self.currentCodeLabel.text = status;
+    [self.delegate morseCodeGestureView:self displayShouldUpdateWithMorseCode:self.currentCode];
 }
 
 @end

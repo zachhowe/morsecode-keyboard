@@ -10,4 +10,7 @@
 
 @interface KeyboardViewController : UIInputViewController
 
+@property (nonatomic) BOOL nextKeyboardButtonHidden;
+@property (nonatomic) BOOL dismissKeyboardButtonHidden;
+
 @end
